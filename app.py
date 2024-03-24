@@ -43,3 +43,13 @@ def preformatted(lines):
         array[0], array[-1] = '<pre>', '</pre>'
         html_lines.extend(array)
     return html_lines
+
+with open(input_file, 'r', encoding='utf-8') as md_file:
+    md_lines = md_file.read().splitlines()
+    print(md_lines)
+    html_lines = []
+
+    html_lines.extend(paragraphs(md_lines))
+    html_lines.extend(preformatted(md_lines))
+    
+    print(html_lines)
