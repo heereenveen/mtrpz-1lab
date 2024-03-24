@@ -27,3 +27,19 @@ def italic(lines):
 def monospaced(lines):
     for i in range(len(lines)):
         lines[i] = re.sub(r'`(.+?)`', r'<tt>\1</tt>', lines[i])
+
+def preformatted(lines):
+    preformatted_indexes = [i for i, element in enumerate(lines) if element == '```']
+
+    if len(preformatted_indexes) % 2 != 0:
+        raise ValueError("invalid markdown: there is a beginning among the markup elements, but no end")
+
+    couple_preformatted_indexes = [preformatted_indexes[i:i+2] for i in range(0, len(preformatted_indexes), 2)]
+
+    html_lines = []
+    for i in couple_preformatted_indexes:
+        start_index_preformatted, end_index_preformatted = i[0], i[1]
+        array = lines[start_index_preformatted : end_index_preformatted + 1]
+        array[0], array[-1] = '<pre>', '</pre>'
+        html_lines.extend(array)
+    return html_lines
